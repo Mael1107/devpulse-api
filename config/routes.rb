@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  # Todas as rotas da API ficam dentro desse namespace
   namespace :api do
     namespace :v1 do
-      # GET /api/v1/users/:id
-      resources :users, only: [:show]
+      resources :users, only: [:show] do
+        # Rota aninhada: snapshots pertencem a um user
+        resources :snapshots, only: [:index]
+      end
     end
   end
 end
