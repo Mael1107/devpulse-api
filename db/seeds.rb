@@ -1,9 +1,30 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+Snapshot.destroy_all
+User.destroy_all
+
+ActiveRecord::Base.connection.reset_pk_sequence!('users')
+ActiveRecord::Base.connection.reset_pk_sequence!('snapshots')
+
+user = User.create!(
+  github_uid: "123456",
+  username: "Mael1107",
+  avatar_url: "https://github.com/Mael1107.png"
+)
+
+puts "Usuário criado: #{user.username}"
+
+
+30.times do |i|
+  user.snapshots.create!(
+    date: i.days.ago.to_date,
+    commits_count: rand(0..15),
+    repos_count: rand(5..12),
+    languages: {
+      "TypeScript" => rand(25..45),
+      "Ruby" => rand(15..35),
+      "JavaScript" => rand(10..25),
+      "CSS" => rand(5..15)
+    }
+  )
+end
+
+puts "#{user.snapshots.count} snapshots criados!"
