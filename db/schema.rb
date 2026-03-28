@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_27_215226) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_28_021312) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "snapshots", force: :cascade do |t|
+    t.integer "commits_count"
+    t.datetime "created_at", null: false
+    t.date "date"
+    t.jsonb "languages"
+    t.integer "repos_count"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_snapshots_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "access_token"
@@ -22,4 +33,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_27_215226) do
     t.datetime "updated_at", null: false
     t.string "username"
   end
+
+  add_foreign_key "snapshots", "users"
 end
