@@ -1,8 +1,6 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    # Em desenvolvimento, aceita qualquer origem
-    # Em produção, trocaremos pra URL real do Vercel
-    origins "*"
+    origins "*"  # Depois troca pra URL real da Vercel
 
     resource "*",
       headers: :any,
